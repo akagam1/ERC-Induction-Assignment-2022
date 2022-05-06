@@ -17,12 +17,13 @@ class Node:
 
 class Map:
 
-	def __init__ (self, start, goal, fig, ax):
+	def __init__ (self, start, goal,bias, fig, ax):
 		self.start = start
 		self.goal = goal
 		self.fig = fig
 		self.ax = ax
 		self.plt = plt
+		self.bias = bias
 
 		self.nodes = []
 		self.obstacles = []
@@ -59,7 +60,7 @@ class Map:
 		parent = self.nodes[child].parent
 		xp,yp = self.nodes[parent].coordinates()
 		xc,yc = self.nodes[child].coordinates()
-		line = plt.Line2D((xc,xp),(yc,yp),color='aqua')
+		line = plt.Line2D((xc,xp),(yc,yp),color='blue')
 		self.ax.add_line(line)
 		return parent
 
@@ -108,7 +109,7 @@ class Map:
 		self.validConnects = []
 		choice = np.random.rand()
 
-		if choice >= 0.7:
+		if choice <= self.bias:
 			for i in range(len(self.nodes)):
 				p = self.nodes[i].coordinates()
 				pNew = self.goal
@@ -133,7 +134,7 @@ class Map:
 		point = self.stepNode((x,y),self.nodes[index].coordinates())
 		#point = (x,y)
 		self.drawEdge(point, self.nodes[index].coordinates(),len(self.nodes),index)
-		node = plt.Circle(point, 1, color='blue')
+		node = plt.Circle(point, 0.75, color='red')
 		self.ax.add_patch(node)
 		self.nodes.append(Node(point[0],point[1],index))
 
